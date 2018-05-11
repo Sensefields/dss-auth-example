@@ -26,11 +26,11 @@ public class AuthExample {
     /**
      * Perform authentication with AWS Cognito.
      *
-     * @param apiKey    Sensefields provided API Key
-     * @param apiSecret Sensefields provided API Secret
+     * @param user    Sensefields provided API Key
+     * @param secret Sensefields provided API Secret
      * @return AuthenticationResultType object that contains the ID, Access and Refresh Token.
      */
-    private static AuthenticationResultType getTokens(String apiKey, String apiSecret) {
+    private static AuthenticationResultType getTokens(String user, String secret) {
 
         //Build an anonymous Cognito client and define the region
         AWSCognitoIdentityProviderClient cognitoClient = new AWSCognitoIdentityProviderClient(new AnonymousAWSCredentials());
@@ -38,7 +38,7 @@ public class AuthExample {
 
         //Build helper objects to handle the crypto
         AWSCryptoSettings cryptoParams = new AWSCryptoSettings();
-        AWSCognitoSession clientSession = new AWSCognitoSession(cryptoParams, apiKey, apiSecret, poolId);
+        AWSCognitoSession clientSession = new AWSCognitoSession(cryptoParams, user, secret, poolId);
 
         /*
         First step of the auth, pass username and SRP_A.
@@ -67,7 +67,7 @@ public class AuthExample {
         RespondToAuthChallengeResult respondToAuthChallengeResult = cognitoClient.respondToAuthChallenge(respondToAuthChallengeRequest);
 
         /*
-        If the authentication is sucessful, the RespondToAuthChallengeResult will contain ID,Acess and Refresh tokens.
+        If the authentication is successful, the RespondToAuthChallengeResult will contain ID,Acess and Refresh tokens.
          */
         return respondToAuthChallengeResult.getAuthenticationResult();
     }
@@ -150,9 +150,10 @@ public class AuthExample {
 
     public static void main(String[] args) {
         String apiKey = "yyy";
-        String apiSecret = "xxx";
+        String username = "";
+        String secret = "xxx";
 
-        AuthenticationResultType authResult = getTokens(apiKey, apiSecret);
+        AuthenticationResultType authResult = getTokens(username, secret);
 
         /*
         System.out.println(authResult.getIdToken());
